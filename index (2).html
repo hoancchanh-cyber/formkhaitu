@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Điền nhanh – Khai tử</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:"Segoe UI",system-ui,sans-serif;background:#eef2f7;color:#1a1a1a;font-size:14px}
+.top{background:#1a5276;color:#fff;padding:12px 16px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;position:sticky;top:0;z-index:100}
+.top h1{font-size:1.1rem}
+.btns{display:flex;gap:6px;flex-wrap:wrap}
+button{font:600 13px inherit;padding:7px 14px;border:0;border-radius:6px;cursor:pointer}
+.b1{background:#fff;color:#1a5276}.b1:hover{background:#dceaf5}
+.b2{background:#27ae60;color:#fff}.b2:hover{background:#1e8449}
+.b3{background:#e74c3c;color:#fff}.b3:hover{background:#c0392b}
+.b4{background:#5d6d7e;color:#fff}.b4:hover{background:#4a5a6a}
+.b5{background:#8e44ad;color:#fff}.b5:hover{background:#7d3c98}
+.b6{background:#d35400;color:#fff}.b6:hover{background:#ba4a00}
+.b7{background:#16a085;color:#fff}.b7:hover{background:#138d75}
+
+.wrap{display:grid;grid-template-columns:400px 1fr;min-height:calc(100vh - 52px)}
+@media(max-width:900px){.wrap{grid-template-columns:1fr}}
+
+.side{background:#fff;border-right:1px solid #d0d7de;padding:12px;overflow-y:auto;max-height:calc(100vh - 52px)}
+.side h3{font-size:.85rem;color:#1a5276;margin:14px 0 6px;padding-bottom:3px;border-bottom:2px solid #2980b9}
+.f{margin-bottom:7px}
+.f label{display:block;font-size:.72rem;font-weight:600;color:#444;margin-bottom:2px}
+.f input,.f select{width:100%;padding:6px 8px;border:1px solid #c8d0d8;border-radius:5px;font:13px inherit;background:#fafbfc}
+.f input:focus,.f select:focus{outline:0;border-color:#2980b9;background:#fff;box-shadow:0 0 0 2px rgba(41,128,185,.18)}
+.r2{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.r3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px}
+
+.fmt{background:#fef9e7;border:1px solid #f7dc6f;border-radius:6px;padding:8px 10px;margin-bottom:10px;font-size:.72rem;line-height:1.4}
+.fmt b{color:#7d6608}
+
+.pb{border:2px dashed;border-radius:8px;padding:8px 10px;margin-bottom:8px}
+.pb label{font-size:.78rem;font-weight:700;margin-bottom:3px;display:block}
+.pb input{width:100%;padding:7px 8px;border:1px solid;border-radius:5px;font:12px monospace;background:#fff}
+.pb .hint{font-size:.65rem;margin-top:3px;opacity:.8}
+.pb .row{display:flex;gap:5px;margin-top:5px}
+.pb .row button{flex:1;padding:6px;font-size:12.5px}
+.pb-nyc{background:#eaf2f8;border-color:#2980b9}.pb-nyc label{color:#1a5276}.pb-nyc input{border-color:#aed6f1}
+.pb-chet{background:#f5eef8;border-color:#8e44ad}.pb-chet label{color:#6c3483}.pb-chet input{border-color:#c39bd3}
+.pb-lc1{background:#e8f8f5;border-color:#16a085}.pb-lc1 label{color:#0e6655}.pb-lc1 input{border-color:#a3e4d7}
+.pb-lc2{background:#fef5e7;border-color:#d35400}.pb-lc2 label{color:#a04000}.pb-lc2 input{border-color:#f5cba7}
+
+.main{padding:10px;overflow-y:auto;max-height:calc(100vh - 52px);background:#dfe6ed}
+.tabs{display:flex;gap:3px;margin-bottom:8px;flex-wrap:wrap}
+.tab{padding:7px 12px;background:#fff;border:1px solid #c8d0d8;border-radius:6px 6px 0 0;cursor:pointer;font:600 12.5px inherit;color:#555}
+.tab.on{background:#1a5276;color:#fff;border-color:#1a5276}
+.page{display:none;background:#fff;padding:20mm 15mm 20mm 30mm;box-shadow:0 2px 10px rgba(0,0,0,.1);font-family:"Times New Roman",Times,serif;font-size:13pt;line-height:1.5}
+.page.on{display:block}
+.qh{text-align:center;font-weight:700;font-size:13pt;line-height:1.3}
+.qh .td{text-transform:uppercase}
+.gn{text-align:center;margin:3px 0 10px;font-weight:700}
+.tt{text-align:center;font-weight:700;font-size:14pt;text-transform:uppercase;margin:10px 0 8px}
+.v{display:inline;border-bottom:1px dotted #333;padding:0 2px;font-weight:600;color:#1a5276;min-width:30px}
+.v.e{color:#bbb;font-weight:400}
+.d{margin:5px 0}
+.st{font-weight:700;margin:10px 0 4px}
+.cd{font-style:italic;margin:12px 0 6px}
+.ck{width:100%;border-collapse:collapse;margin-top:14px}
+.ck td{width:50%;vertical-align:top;padding:6px;text-align:center}
+.ck .lb{font-weight:700}
+.ck .nm{margin-top:42px;font-weight:600}
+.sm{font-size:11pt}
+.c{text-align:center}
+.mt{margin-top:10px}
+
+@media print{
+  .top,.side,.tabs{display:none!important}
+  .wrap{display:block}
+  .main{padding:0;max-height:none;background:#fff;overflow:visible}
+  .page{
+    display:block!important;
+    box-shadow:none;
+    padding:0;
+    page-break-after:always;
+    font-family:"Times New Roman",Times,serif!important;
+    font-size:13pt!important;
+    line-height:1.5!important;
+  }
+  .page:last-child{page-break-after:auto}
+  .v{color:#000!important;border-bottom:1px solid #000}
+  /* Nghị định 30: trên 20mm, dưới 20mm, trái 30mm, phải 15mm */
+  @page{size:A4;margin:20mm 15mm 20mm 30mm}
+}
+</style>
+</head>
+<body>
+<div class="top">
+  <h1>⚡ Điền nhanh – Đăng ký khai tử</h1>
+  <div class="btns">
+    <button class="b4" onclick="mau()">Mẫu thử</button>
+    <button class="b3" onclick="xoa()">Xóa</button>
+    <button class="b2" onclick="printAll()">In cả 3 tờ</button>
+    <button class="b5" onclick="exportWord()">Xuất Word</button>
+  </div>
+</div>
+
+<div class="wrap">
+  <div class="side">
+    <div class="fmt">
+      <b>Định dạng chung (6 phần, cách bằng | ) — áp dụng cả 4 ô:</b><br>
+      <code>CCCD|Họ tên|Ngày sinh|Giới tính|Địa chỉ|Ngày cấp CCCD</code><br>
+      • Ngày: <code>01011943</code> → 01/01/1943<br>
+      • Ví dụ: <code>052149006428|Huỳnh Thị Đ|01011943|Nữ|Thôn A, CA, PC, BĐ|28092021</code><br>
+      • Giấy tờ tùy thân → <b>Số CCCD: …, ngày cấp: …</b>
+    </div>
+
+    <!-- 1. Người khai -->
+    <div class="pb pb-nyc">
+      <label>👤 1. Người khai</label>
+      <input id="pNYC" placeholder="049175000123|Nguyễn Văn A|12081975|Nam|Thôn 3, xã Ngô Mây, tỉnh Gia Lai|15062020">
+      <div class="hint">Phần cuối = Ngày cấp CCCD</div>
+      <div class="row"><button class="b1" onclick="parseNYC()">Tách điền</button></div>
+    </div>
+
+    <!-- 2. Người mất -->
+    <div class="pb pb-chet">
+      <label>⚰️ 2. Người mất</label>
+      <input id="pChet" placeholder="052149006428|Huỳnh Thị Đ|01011943|Nữ|Thôn A, CA, PC, BĐ|28092021">
+      <div class="hint">Phần cuối = Ngày cấp CCCD (28092021)</div>
+      <div class="row"><button class="b5" onclick="parseChet()">Tách điền</button></div>
+    </div>
+
+    <!-- 3. LC1 -->
+    <div class="pb pb-lc1">
+      <label>👥 3. Người làm chứng 1</label>
+      <input id="pLC1" placeholder="049165000456|Trần Văn Bình|20051965|Nam|Thôn 3, xã Ngô Mây|10032021">
+      <div class="hint">Phần cuối = Ngày cấp CCCD</div>
+      <div class="row"><button class="b7" onclick="parseLC1()">Tách điền</button></div>
+    </div>
+
+    <!-- 4. LC2 -->
+    <div class="pb pb-lc2">
+      <label>👥 4. Người làm chứng 2</label>
+      <input id="pLC2" placeholder="049170000789|Lê Thị Hoa|15111970|Nữ|Thôn 3, xã Ngô Mây|22072019">
+      <div class="hint">Phần cuối = Ngày cấp CCCD</div>
+      <div class="row"><button class="b6" onclick="parseLC2()">Tách điền</button></div>
+    </div>
+
+    <h3>📅 Ngày & cơ quan</h3>
+    <div class="f"><label>Cơ quan nhận</label><input id="cq" value="UBND xã Ngô Mây, tỉnh Gia Lai" oninput="s()"></div>
+    <div class="r3">
+      <div class="f"><label>Ngày</label><input type="number" id="nl" min="1" max="31" oninput="s()"></div>
+      <div class="f"><label>Tháng</label><input type="number" id="tl" min="1" max="12" oninput="s()"></div>
+      <div class="f"><label>Năm</label><input type="number" id="yl" min="2020" max="2030" oninput="s()"></div>
+    </div>
+    <div class="f"><label>Nơi làm đơn</label><input id="nld" value="xã Ngô Mây" oninput="s()"></div>
+
+    <h3>👤 Người yêu cầu</h3>
+    <div class="f"><label>Họ và tên</label><input id="tn" oninput="s()"></div>
+    <div class="f"><label>Ngày sinh</label><input id="nsn" oninput="s()"></div>
+    <div class="f"><label>Nơi cư trú / HKTT</label><input id="ctn" oninput="s()"></div>
+    <div class="f"><label>Giấy tờ tùy thân</label><input id="gtn" oninput="s()"></div>
+    <div class="r2">
+      <div class="f"><label>Quan hệ với người chết</label><input id="qh" oninput="s()"></div>
+      <div class="f"><label>SĐT</label><input id="sdtn" oninput="s()"></div>
+    </div>
+
+    <h3>⚰️ Người đã chết</h3>
+    <div class="f"><label>Họ và tên</label><input id="tc" oninput="s()"></div>
+    <div class="f"><label>Ngày sinh</label><input id="nsc" oninput="s()"></div>
+    <div class="r2">
+      <div class="f"><label>Dân tộc</label><input id="dt" value="Kinh" oninput="s()"></div>
+      <div class="f"><label>Quốc tịch</label><input id="qt" value="Việt Nam" oninput="s()"></div>
+    </div>
+    <div class="f"><label>Giới tính</label>
+      <select id="gt" onchange="s()"><option>Nam</option><option>Nữ</option></select>
+    </div>
+    <div class="f"><label>Nơi cư trú cuối cùng</label><input id="ctc" oninput="s()"></div>
+    <div class="f"><label>Giấy tờ tùy thân (CCCD)</label><input id="gtc" oninput="s()"></div>
+    <div class="f"><label>CMND cũ</label><input id="cmndcu" oninput="s()"></div>
+
+    <h3>🕐 Thời gian & nguyên nhân chết</h3>
+    <div class="r3">
+      <div class="f"><label>Giờ</label><input type="number" id="gc" min="0" max="23" oninput="s()"></div>
+      <div class="f"><label>Phút</label><input type="number" id="pc" min="0" max="59" oninput="s()"></div>
+      <div class="f"><label>Ngày (Dương)</label><input type="number" id="nc" min="1" max="31" oninput="fromDuong()"></div>
+    </div>
+    <div class="r2">
+      <div class="f"><label>Tháng (Dương)</label><input type="number" id="tc2" min="1" max="12" oninput="fromDuong()"></div>
+      <div class="f"><label>Năm (Dương)</label><input type="number" id="yc" min="1900" max="2030" oninput="fromDuong()"></div>
+    </div>
+    <div class="r3">
+      <div class="f"><label>Ngày (Âm)</label><input type="number" id="na" min="1" max="30" oninput="fromAm()"></div>
+      <div class="f"><label>Tháng (Âm)</label><input type="number" id="ta" min="1" max="12" oninput="fromAm()"></div>
+      <div class="f"><label>Năm (Âm)</label><input type="number" id="ya" min="1900" max="2030" oninput="fromAm()"></div>
+    </div>
+    <div class="f">
+      <label><input type="checkbox" id="nhuan" onchange="fromAm()" style="width:auto;margin-right:6px"> Tháng nhuận (âm)</label>
+    </div>
+    <div class="f"><label>Nơi chết</label><input id="noc" oninput="s()"></div>
+    <div class="f"><label>Nguyên nhân chết</label><input id="nn" oninput="s()"></div>
+    <div class="f"><label>Nơi chôn cất</label><input id="ncc" oninput="s()"></div>
+    <div class="f"><label>Số Giấy báo tử</label><input id="sgbt" oninput="s()"></div>
+    <div class="r3">
+      <div class="f"><label>Ngày cấp</label><input type="number" id="ngbt" min="1" max="31" oninput="s()"></div>
+      <div class="f"><label>Tháng</label><input type="number" id="tgbt" min="1" max="12" oninput="s()"></div>
+      <div class="f"><label>Năm</label><input type="number" id="ygbt" min="1900" max="2030" oninput="s()"></div>
+    </div>
+    <div class="f"><label>Do cơ quan cấp</label><input id="cqgbt" oninput="s()"></div>
+
+    <h3>📍 Nơi thường trú trước</h3>
+    <div class="f"><label>Thôn hiện tại</label><input id="tht" oninput="s()"></div>
+    <div class="f"><label>Thôn cũ</label><input id="tcu" oninput="s()"></div>
+    <div class="f"><label>Xã / Huyện / Tỉnh cũ</label><input id="xcu" oninput="s()"></div>
+
+    <h3>👥 Người làm chứng 1</h3>
+    <div class="f"><label>Họ tên</label><input id="l1" oninput="s()"></div>
+    <div class="f"><label>Ngày sinh</label><input id="l1ns" oninput="s()"></div>
+    <div class="f"><label>Giấy tờ</label><input id="l1gt" oninput="s()"></div>
+    <div class="f"><label>HKTT</label><input id="l1hk" oninput="s()"></div>
+    <div class="f"><label>SĐT</label><input id="l1sdt" oninput="s()"></div>
+
+    <h3>👥 Người làm chứng 2</h3>
+    <div class="f"><label>Họ tên</label><input id="l2" oninput="s()"></div>
+    <div class="f"><label>Ngày sinh</label><input id="l2ns" oninput="s()"></div>
+    <div class="f"><label>Giấy tờ</label><input id="l2gt" oninput="s()"></div>
+    <div class="f"><label>HKTT</label><input id="l2hk" oninput="s()"></div>
+    <div class="f"><label>SĐT</label><input id="l2sdt" oninput="s()"></div>
+
+    <h3>🏘️ Thôn & biên bản</h3>
+    <div class="f"><label>Tên thôn</label><input id="tthon" oninput="s()"></div>
+    <div class="f"><label>Trưởng thôn</label><input id="tt" oninput="s()"></div>
+    <div class="f"><label>Người ghi BB</label><input id="ngbb" value="Đinh Tấn Vinh" oninput="s()"></div>
+    <div class="r2">
+      <div class="f"><label>Giờ bắt đầu</label><input type="number" id="gbb" min="0" max="23" oninput="s()"></div>
+      <div class="f"><label>Phút</label><input type="number" id="pbb" min="0" max="59" oninput="s()"></div>
+    </div>
+    <div class="r2">
+      <div class="f"><label>Giờ kết thúc</label><input type="number" id="gkt" min="0" max="23" oninput="s()"></div>
+      <div class="f"><label>Phút</label><input type="number" id="pkt" min="0" max="59" oninput="s()"></div>
+    </div>
+    <div class="r2">
+      <div class="f"><label>Cấp bản sao?</label>
+        <select id="bs" onchange="s()"><option>Không</option><option>Có</option></select>
+      </div>
+      <div class="f"><label>Số lượng</label><input type="number" id="slbs" min="0" value="0" oninput="s()"></div>
+    </div>
+  </div>
+
+  <div class="main">
+    <div class="tabs">
+      <div class="tab on" data-t="0" onclick="tab(0)">Tất cả 3 mẫu</div>
+      <div class="tab" data-t="1" onclick="tab(1)">1. Tờ khai</div>
+      <div class="tab" data-t="2" onclick="tab(2)">2. Làm chứng</div>
+      <div class="tab" data-t="3" onclick="tab(3)">3. Biên bản</div>
+    </div>
+
+    <div class="page on" id="p1" style="margin-bottom:24px">
+      <div class="qh"><div class="td">CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM</div><div>Độc lập - Tự do - Hạnh phúc</div></div>
+      <div class="gn">--------------------</div>
+      <div class="tt">TỜ KHAI ĐĂNG KÝ KHAI TỬ</div>
+      <div class="d">Kính gửi: <span class="v" d="cq"></span></div>
+      <div class="d">Họ, chữ đệm, tên người yêu cầu: <span class="v" d="tn"></span></div>
+      <div class="d">Ngày, tháng, năm sinh: <span class="v" d="nsn"></span></div>
+      <div class="d">Nơi cư trú: <span class="v" d="ctn"></span></div>
+      <div class="d">Giấy tờ tùy thân: <span class="v" d="gtn"></span></div>
+      <div class="d">Quan hệ với người đã chết: <span class="v" d="qh"></span></div>
+      <div class="st">Đề nghị cơ quan đăng ký khai tử cho người có tên dưới đây:</div>
+      <div class="d">Họ, chữ đệm, tên: <span class="v" d="tc"></span></div>
+      <div class="d">Ngày, tháng, năm sinh: <span class="v" d="nsc"></span> &nbsp; Dân tộc: <span class="v" d="dt"></span> &nbsp; Quốc tịch: <span class="v" d="qt"></span></div>
+      <div class="d">Giới tính: <span class="v" d="gt"></span></div>
+      <div class="d">Nơi cư trú cuối cùng: <span class="v" d="ctc"></span></div>
+      <div class="d">Giấy tờ tùy thân: <span class="v" d="gtc"></span></div>
+      <div class="d">Đã chết vào lúc: <span class="v" d="gc"></span> giờ <span class="v" d="pc"></span> phút, ngày <span class="v" d="nc"></span> tháng <span class="v" d="tc2"></span> năm <span class="v" d="yc"></span> (Dương lịch)<span class="v" d="amlich" data-prefix=" nhằm ngày "></span></div>
+      <div class="d">Nơi chết: <span class="v" d="noc"></span></div>
+      <div class="d">Nguyên nhân chết: <span class="v" d="nn"></span></div>
+      <div class="d">Số Giấy báo tử/Giấy tờ thay thế Giấy báo tử: <span class="v" d="sgbt"></span></div>
+      <div class="d">cấp ngày <span class="v" d="ngbt"></span> tháng <span class="v" d="tgbt"></span> năm <span class="v" d="ygbt"></span> do <span class="v" d="cqgbt"></span></div>
+      <div class="cd">Tôi cam đoan những nội dung khai trên đây là đúng sự thật và chịu trách nhiệm trước pháp luật về cam đoan của mình.</div>
+      <div class="d">Làm tại: <span class="v" d="nld"></span>, ngày <span class="v" d="nl"></span> tháng <span class="v" d="tl"></span> năm <span class="v" d="yl"></span></div>
+      <table class="ck"><tr>
+        <td><div class="lb">Đề nghị cấp bản sao: <span class="v" d="bs"></span></div><div>Số lượng: <span class="v" d="slbs"></span> bản</div></td>
+        <td><div class="lb">Người yêu cầu</div><div class="sm">(Ký, ghi rõ họ, chữ đệm, tên)</div><div class="nm"><span class="v" d="tn"></span></div></td>
+      </tr></table>
+    </div>
+
+    <div class="page on" id="p2" style="margin-bottom:24px">
+      <div class="qh"><div class="td">CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM</div><div>Độc lập – Tự do – Hạnh phúc</div></div>
+      <div class="gn">--------------------</div>
+      <div class="tt">GIẤY XÁC NHẬN NGƯỜI LÀM CHỨNG</div>
+      <div class="d">Kính gửi: - UBND xã Ngô Mây, tỉnh Gia Lai;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- Ban nhân dân thôn <span class="v" d="tthon"></span></div>
+      <div class="d">Chúng tôi gồm có:</div>
+      <div class="st">* Đại diện gia đình người chết đã lâu:</div>
+      <div class="d">Ông/Bà: <span class="v" d="tn"></span>, Sinh ngày: <span class="v" d="nsn"></span></div>
+      <div class="d">Giấy tờ tùy thân: <span class="v" d="gtn"></span></div>
+      <div class="d">HKTT: <span class="v" d="ctn"></span></div>
+      <div class="d">Số điện thoại liên hệ: <span class="v" d="sdtn"></span></div>
+      <div class="st">* Người làm chứng:</div>
+      <div class="d"><b>Người làm chứng 1:</b></div>
+      <div class="d">Ông/Bà: <span class="v" d="l1"></span>, Sinh ngày: <span class="v" d="l1ns"></span></div>
+      <div class="d">Giấy tờ tùy thân: <span class="v" d="l1gt"></span></div>
+      <div class="d">HKTT: <span class="v" d="l1hk"></span></div>
+      <div class="d">Số điện thoại liên hệ: <span class="v" d="l1sdt"></span></div>
+      <div class="d mt"><b>Người làm chứng 2:</b></div>
+      <div class="d">Ông/Bà: <span class="v" d="l2"></span>, Sinh ngày: <span class="v" d="l2ns"></span></div>
+      <div class="d">Giấy tờ tùy thân: <span class="v" d="l2gt"></span></div>
+      <div class="d">HKTT: <span class="v" d="l2hk"></span></div>
+      <div class="d">Số điện thoại liên hệ: <span class="v" d="l2sdt"></span></div>
+      <div class="d mt">Hôm nay tại hộ gia đình Ông/Bà <span class="v" d="l1"></span>, các thành phần có mặt của chúng tôi xác minh việc chết của Ông/Bà có tên sau là đúng sự thật.</div>
+      <div class="d">Ông/Bà: <span class="v" d="tc"></span>, Sinh ngày: <span class="v" d="nsc"></span></div>
+      <div class="d">Các thành phần tham gia dự họp trình bày việc chết của ông/bà có tên sau là đúng sự thật, đồng thời cam đoan chịu trách nhiệm trước pháp luật về lời khai cũng như lời làm chứng của bản thân.</div>
+      <div class="d">Ông/Bà: <span class="v" d="tc"></span>, Ngày sinh: <span class="v" d="nsc"></span></div>
+      <div class="d">Nơi thường trú trước khi chết: thôn <span class="v" d="tht"></span>, xã Ngô Mây, Tỉnh Gia Lai</div>
+      <div class="d sm">(Trước đây thuộc Thôn <span class="v" d="tcu"></span> xã <span class="v" d="xcu"></span>)</div>
+      <div class="d">Đã chết vào lúc: <span class="v" d="gc"></span> giờ <span class="v" d="pc"></span> phút, ngày <span class="v" d="nc"></span>/<span class="v" d="tc2"></span>/<span class="v" d="yc"></span> (Dương lịch)<span class="v" d="amlich" data-prefix=" nhằm ngày "></span></div>
+      <div class="d">Nơi chết: <span class="v" d="noc"></span></div>
+      <div class="d">Nguyên nhân chết: <span class="v" d="nn"></span></div>
+      <div class="d">Nơi chôn cất: <span class="v" d="ncc"></span></div>
+      <div class="d mt">Biên bản kết thúc vào lúc <span class="v" d="gkt"></span> giờ <span class="v" d="pkt"></span> phút, ngày <span class="v" d="nl"></span> tháng <span class="v" d="tl"></span> năm <span class="v" d="yl"></span>, đọc lại cho các thành phần tham dự nghe./.</div>
+      <table class="ck"><tr>
+        <td><div class="lb">XÁC NHẬN TRƯỞNG THÔN</div><div class="sm">(Ký, ghi rõ họ tên)</div><div class="nm"><span class="v" d="tt"></span></div></td>
+        <td><div class="lb">NGƯỜI GHI BIÊN BẢN</div><div class="sm">(Ký, ghi rõ họ tên)</div><div class="nm"><span class="v" d="ngbb"></span></div></td>
+      </tr></table>
+      <div class="st c mt">THÀNH PHẦN THAM DỰ</div>
+      <div class="c sm">(Ký, ghi rõ họ tên)</div>
+      <div class="d mt">1. <span class="v" d="tn"></span></div>
+      <div class="d">2. <span class="v" d="l1"></span></div>
+      <div class="d">3. <span class="v" d="l2"></span></div>
+    </div>
+
+    <div class="page on" id="p3">
+      <div class="qh"><div class="td">CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM</div><div>Độc lập - Tự do - Hạnh phúc</div></div>
+      <div class="gn">--------------------</div>
+      <div class="tt">BIÊN BẢN XÁC MINH</div>
+      <div class="d">Hôm nay vào lúc <span class="v" d="gbb"></span> giờ <span class="v" d="pbb"></span> phút, ngày <span class="v" d="nl"></span> tháng <span class="v" d="tl"></span> năm <span class="v" d="yl"></span>.</div>
+      <div class="d">Tại hộ gia đình Ông/Bà <span class="v" d="l1"></span> ở thôn <span class="v" d="tthon"></span>, xã Ngô Mây, tỉnh Gia Lai.</div>
+      <div class="st">* Thành phần đi xác minh:</div>
+      <div class="d">1. Ông Đinh Tấn Vinh, Chuyên viên Văn phòng HĐND và UBND;</div>
+      <div class="d">2. Ông <span class="v" d="tt"></span>, Trưởng thôn <span class="v" d="tthon"></span></div>
+      <div class="st">* Đại diện hộ gia đình báo tử:</div>
+      <div class="d">1. Ông/Bà: <span class="v" d="tn"></span> - Ngày sinh: <span class="v" d="nsn"></span></div>
+      <div class="d">Giấy tờ tùy thân: <span class="v" d="gtn"></span></div>
+      <div class="d">HKTT: <span class="v" d="ctn"></span></div>
+      <div class="d">Số điện thoại liên hệ: <span class="v" d="sdtn"></span></div>
+      <div class="d mt"><b>Người làm chứng 1:</b></div>
+      <div class="d">Ông/Bà: <span class="v" d="l1"></span> - Ngày sinh: <span class="v" d="l1ns"></span></div>
+      <div class="d">Giấy tờ tùy thân: <span class="v" d="l1gt"></span></div>
+      <div class="d">HKTT: <span class="v" d="l1hk"></span></div>
+      <div class="d">Số điện thoại liên hệ: <span class="v" d="l1sdt"></span></div>
+      <div class="d mt"><b>Người làm chứng 2:</b></div>
+      <div class="d">Ông/Bà: <span class="v" d="l2"></span> - Ngày sinh: <span class="v" d="l2ns"></span></div>
+      <div class="d">Giấy tờ tùy thân: <span class="v" d="l2gt"></span></div>
+      <div class="d">HKTT: <span class="v" d="l2hk"></span></div>
+      <div class="d">Số điện thoại liên hệ: <span class="v" d="l2sdt"></span></div>
+      <div class="d mt">Ông Đinh Tấn Vinh, Chuyên viên Văn phòng HĐND và UBND nêu các quy định về đăng ký khai tử, quyền, trách nhiệm của các bên cho các thành phần tham dự họp nghe. Đồng thời quán triệt tính trung thực, chính xác, khách quan trong quá trình khai tử.</div>
+      <div class="st">* Kết quả xác minh:</div>
+      <div class="d">Nơi thường trú trước khi chết: thôn <span class="v" d="tht"></span>, xã Ngô Mây, Tỉnh Gia Lai</div>
+      <div class="d sm">(Trước đây thuộc Thôn <span class="v" d="tcu"></span> xã <span class="v" d="xcu"></span>)</div>
+      <div class="d">Đã chết vào lúc: <span class="v" d="gc"></span> giờ <span class="v" d="pc"></span> phút, ngày <span class="v" d="nc"></span>/<span class="v" d="tc2"></span>/<span class="v" d="yc"></span> (Dương lịch)<span class="v" d="amlich" data-prefix=" nhằm ngày "></span></div>
+      <div class="d">Nơi chết: <span class="v" d="noc"></span></div>
+      <div class="d">Nguyên nhân chết: <span class="v" d="nn"></span></div>
+      <div class="d">Nơi chôn cất: <span class="v" d="ncc"></span></div>
+      <div class="d mt">Chúng tôi xin cam đoan những thông tin đã trình bày trên là đúng và chịu trách nhiệm trước pháp luật.</div>
+      <div class="d">Kính đề nghị Ban nhân dân thôn, UBND xã Ngô Mây, tỉnh Gia Lai xác nhận sự việc trên là đúng và đăng ký khai tử theo quy định./.</div>
+      <table class="ck"><tr>
+        <td><div class="lb">XÁC NHẬN<br>CỦA BAN NHÂN DÂN THÔN</div></td>
+        <td>
+          <div class="sm">Xã Ngô Mây, ngày <span class="v" d="nl"></span> tháng <span class="v" d="tl"></span> năm <span class="v" d="yl"></span></div>
+          <div class="lb mt">Đại diện gia đình người chết</div>
+          <div class="sm">(Ký và ghi rõ họ tên)</div>
+          <div class="nm"><span class="v" d="tn"></span></div>
+        </td>
+      </tr></table>
+      <div class="st mt">Người làm chứng về thông tin Ông/Bà chết.</div>
+      <div class="d">1- Họ và tên: <span class="v" d="l1"></span></div>
+      <div class="d">2- Họ và tên: <span class="v" d="l2"></span></div>
+    </div>
+  </div>
+</div>
+
+<script>
+const ids=['cq','nl','tl','yl','nld','tn','nsn','ctn','gtn','qh','sdtn','tc','nsc','dt','qt','gt','ctc','gtc','cmndcu','gc','pc','nc','tc2','yc','noc','nn','ncc','sgbt','ngbt','tgbt','ygbt','cqgbt','tht','tcu','xcu','l1','l1ns','l1gt','l1hk','l1sdt','l2','l2ns','l2gt','l2hk','l2sdt','tthon','tt','ngbb','gbb','pbb','gkt','pkt','bs','slbs'];
+
+function v(id){const e=document.getElementById(id);return e?(e.value||'').trim():''}
+function set(id,val){const e=document.getElementById(id);if(e)e.value=val||'';}
+
+/* ===== Âm lịch (thuật toán Hồ Ngọc Đức) ===== */
+const PI=Math.PI;
+function jdFromDate(dd,mm,yy){
+  const a=Math.floor((14-mm)/12), y=yy+4800-a, m=mm+12*a-3;
+  let jd=dd+Math.floor((153*m+2)/5)+365*y+Math.floor(y/4)-Math.floor(y/100)+Math.floor(y/400)-32045;
+  return jd;
+}
+function sunLongitude(jdn){
+  const T=(jdn-2451545.0)/36525;
+  const T2=T*T;
+  let dr=PI/180;
+  let M=357.52910+35999.05030*T-0.0001559*T2-0.00000048*T*T2;
+  let L0=280.46645+36000.76983*T+0.0003032*T2;
+  let DL=(1.914600-0.004817*T-0.000014*T2)*Math.sin(dr*M);
+  DL+=(0.019993-0.000101*T)*Math.sin(dr*2*M)+0.000290*Math.sin(dr*3*M);
+  let L=L0+DL;
+  L=L*dr; L=L-PI*2*(Math.floor(L/(PI*2)));
+  return L;
+}
+function newMoon(k){
+  const T=k/1236.85, T2=T*T, T3=T2*T;
+  let dr=PI/180;
+  let Jd1=2415020.75933+29.53058868*k+0.0001178*T2-0.000000155*T3;
+  Jd1+=0.00033*Math.sin((166.56+132.87*T-0.009173*T2)*dr);
+  let M=359.2242+29.10535608*k-0.0000333*T2-0.00000347*T3;
+  let Mpr=306.0253+385.81691806*k+0.0107306*T2+0.00001236*T3;
+  let F=21.2964+390.67050646*k-0.0016528*T2-0.00000239*T3;
+  let C1=(0.1734-0.000393*T)*Math.sin(M*dr)+0.0021*Math.sin(2*dr*M);
+  C1-=0.4068*Math.sin(Mpr*dr)+0.0161*Math.sin(dr*2*Mpr);
+  C1-=0.0004*Math.sin(dr*3*Mpr)+0.0104*Math.sin(dr*2*F);
+  C1-=0.0051*Math.sin(dr*(M+Mpr))-0.0074*Math.sin(dr*(M-Mpr));
+  C1+=0.0004*Math.sin(dr*(2*F+M))-0.0004*Math.sin(dr*(2*F-M));
+  C1-=0.0006*Math.sin(dr*(2*F+Mpr))+0.0010*Math.sin(dr*(2*F-Mpr));
+  C1+=0.0005*Math.sin(dr*(2*Mpr+M));
+  let deltat;
+  if(T<-11) deltat=0.001+0.000839*T+0.0002261*T2-0.00000845*T3-0.000000081*T*T3;
+  else deltat=-0.000278+0.000265*T+0.000262*T2;
+  return Jd1+C1-deltat;
+}
+function getSunLongitude(jdn,timeZone){
+  return Math.floor(sunLongitude(jdn-0.5-timeZone/24)/PI*6);
+}
+function getNewMoonDay(k,timeZone){
+  return Math.floor(newMoon(k)+0.5+timeZone/24);
+}
+function getLunarMonth11(yy,timeZone){
+  const off=jdFromDate(31,12,yy)-2415021;
+  const k=Math.floor(off/29.530588853);
+  let nm=getNewMoonDay(k,timeZone);
+  const sunLong=getSunLongitude(nm,timeZone);
+  if(sunLong>=9) nm=getNewMoonDay(k-1,timeZone);
+  return nm;
+}
+function getLeapMonthOffset(a11,timeZone){
+  const k=Math.floor((a11-2415021.076998695)/29.530588853+0.5);
+  let last=0, i=1, arc=getSunLongitude(getNewMoonDay(k+i,timeZone),timeZone);
+  do{
+    last=arc; i++;
+    arc=getSunLongitude(getNewMoonDay(k+i,timeZone),timeZone);
+  }while(arc!==last && i<14);
+  return i-1;
+}
+function convertSolar2Lunar(dd,mm,yy,timeZone){
+  const dayNumber=jdFromDate(dd,mm,yy);
+  const k=Math.floor((dayNumber-2415021.076998695)/29.530588853);
+  let monthStart=getNewMoonDay(k+1,timeZone);
+  if(monthStart>dayNumber) monthStart=getNewMoonDay(k,timeZone);
+  let a11=getLunarMonth11(yy,timeZone), b11=a11;
+  let lunarYear;
+  if(a11>=monthStart){ lunarYear=yy; a11=getLunarMonth11(yy-1,timeZone); }
+  else{ lunarYear=yy+1; b11=getLunarMonth11(yy+1,timeZone); }
+  const lunarDay=dayNumber-monthStart+1;
+  const diff=Math.floor((monthStart-a11)/29);
+  let lunarLeap=0, lunarMonth=diff+11;
+  if(b11-a11>365){
+    const leapMonthDiff=getLeapMonthOffset(a11,timeZone);
+    if(diff>=leapMonthDiff){ lunarMonth=diff+10; if(diff===leapMonthDiff) lunarLeap=1; }
+  }
+  if(lunarMonth>12) lunarMonth-=12;
+  if(lunarMonth>=11 && diff<4) lunarYear-=1;
+  return [lunarDay, lunarMonth, lunarYear, lunarLeap];
+}
+function toAmLich(dd,mm,yy){
+  if(!dd||!mm||!yy) return '';
+  try{
+    const [ld,lm,ly,leap]=convertSolar2Lunar(+dd,+mm,+yy,7);
+    if(!ld||!lm||!ly) return '';
+    return ld+'/'+lm+'/'+ly+(leap?' (nhuận)':'')+' (Âm lịch)';
+  }catch(e){ return ''; }
+}
+
+function jdToDate(jd){
+  let a,b,c,d,e,m,day,month,year;
+  if(jd>2299160){
+    a=jd+32044; b=Math.floor((4*a+3)/146097); c=a-Math.floor(b*146097/4);
+  } else { b=0; c=jd+32082; }
+  d=Math.floor((4*c+3)/1461); e=c-Math.floor(1461*d/4); m=Math.floor((5*e+2)/153);
+  day=e-Math.floor((153*m+2)/5)+1;
+  month=m+3-12*Math.floor(m/10);
+  year=b*100+d-4800+Math.floor(m/10);
+  return [day,month,year];
+}
+
+function convertLunar2Solar(lunarDay,lunarMonth,lunarYear,lunarLeap,timeZone){
+  let a11,b11;
+  if(lunarMonth<11){ a11=getLunarMonth11(lunarYear-1,timeZone); b11=getLunarMonth11(lunarYear,timeZone); }
+  else{ a11=getLunarMonth11(lunarYear,timeZone); b11=getLunarMonth11(lunarYear+1,timeZone); }
+  const k=Math.floor(0.5+(a11-2415021.076998695)/29.530588853);
+  let off=lunarMonth-11;
+  if(off<0) off+=12;
+  if(b11-a11>365){
+    const leapOff=getLeapMonthOffset(a11,timeZone);
+    let leapMonth=leapOff-2; if(leapMonth<0) leapMonth+=12;
+    if(lunarLeap!==0 && lunarMonth!==leapMonth) return [0,0,0];
+    if(lunarLeap!==0 || off>=leapOff) off+=1;
+  }
+  const monthStart=getNewMoonDay(k+off,timeZone);
+  return jdToDate(monthStart+lunarDay-1);
+}
+
+let _syncing=false;
+
+function fromDuong(){
+  if(_syncing) return;
+  _syncing=true;
+  const dd=v('nc'), mm=v('tc2'), yy=v('yc');
+  if(dd&&mm&&yy){
+    try{
+      const [ld,lm,ly,leap]=convertSolar2Lunar(+dd,+mm,+yy,7);
+      set('na',ld); set('ta',lm); set('ya',ly);
+      document.getElementById('nhuan').checked=!!leap;
+    }catch(e){}
+  }
+  _syncing=false;
+  s();
+}
+
+function fromAm(){
+  if(_syncing) return;
+  _syncing=true;
+  const ld=v('na'), lm=v('ta'), ly=v('ya');
+  const leap=document.getElementById('nhuan').checked?1:0;
+  if(ld&&lm&&ly){
+    try{
+      const [dd,mm,yy]=convertLunar2Solar(+ld,+lm,+ly,leap,7);
+      if(dd&&mm&&yy){ set('nc',dd); set('tc2',mm); set('yc',yy); }
+    }catch(e){}
+  }
+  _syncing=false;
+  s();
+}
+
+function s(){
+  const m={};
+  ids.forEach(i=>m[i]=v(i));
+  let gtFull=m.gtc||'';
+  if(m.cmndcu) gtFull=gtFull?(gtFull+' / CMND cũ: '+m.cmndcu):('CMND số '+m.cmndcu);
+  m.gtc=gtFull;
+  // Tự quy đổi âm lịch từ ngày chết dương
+  m.amlich = toAmLich(m.nc, m.tc2, m.yc);
+  document.querySelectorAll('.v').forEach(el=>{
+    const k=el.getAttribute('d');
+    let val=m[k]||'';
+    const prefix=el.getAttribute('data-prefix')||'';
+    if(k==='amlich'){
+      if(val){ el.textContent=prefix+val; el.classList.remove('e'); }
+      else{ el.textContent=''; el.classList.add('e'); }
+      return;
+    }
+    el.textContent=val||'..........';
+    el.classList.toggle('e',!val);
+  });
+}
+
+function tab(n){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));
+  document.querySelector('.tab[data-t="'+n+'"]').classList.add('on');
+  if(n===0){
+    // Hiện cả 3
+    document.querySelectorAll('.page').forEach(p=>p.classList.add('on'));
+  } else {
+    document.querySelectorAll('.page').forEach(p=>p.classList.remove('on'));
+    document.getElementById('p'+n).classList.add('on');
+  }
+}
+
+function printAll(){
+  // Đảm bảo cả 3 đều hiện trước khi in
+  document.querySelectorAll('.page').forEach(p=>p.classList.add('on'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));
+  document.querySelector('.tab[data-t="0"]').classList.add('on');
+  setTimeout(()=>window.print(), 100);
+}
+
+function fmtDate(raw){
+  raw=(raw||'').replace(/\D/g,'');
+  if(raw.length===8) return raw.slice(0,2)+'/'+raw.slice(2,4)+'/'+raw.slice(4);
+  if(raw.length===6){
+    const yy=parseInt(raw.slice(4),10);
+    const full=yy>50?('19'+raw.slice(4)):('20'+raw.slice(4));
+    return raw.slice(0,2)+'/'+raw.slice(2,4)+'/'+full;
+  }
+  return raw;
+}
+
+function splitP(id){
+  return (document.getElementById(id).value||'').trim().split('|').map(x=>x.trim());
+}
+
+function gtStr(cccd,cmnd){
+  let s='';
+  if(cccd) s='CCCD số '+cccd;
+  if(cmnd) s=s?(s+' / CMND: '+cmnd):('CMND số '+cmnd);
+  return s;
+}
+
+function isGender(x){
+  if(!x) return false;
+  const g=x.toLowerCase();
+  return g==='nam'||g==='nữ'||g==='nu'||g.includes('nữ')||g.includes('nam');
+}
+
+/* Định dạng 6 phần (ALL):
+   0:CCCD  1:Họ tên  2:Ngày sinh  3:Giới tính  4:Địa chỉ  5:Ngày cấp CCCD
+   (Vẫn chấp nhận format cũ 7 phần có CMND)
+*/
+function normalizeParts(p){
+  if(p.length>=7 && /^\d{6,12}$/.test(p[1]) && !/^\d{8}$/.test(p[1])){
+    return [p[0], p[2], p[3], p[4], p[5], p[6]];
+  }
+  if(p.length>=6) return [p[0], p[1], p[2], p[3], p[4], p[5]];
+  return p;
+}
+
+function gtCCCD(cccd, ngayFmt){
+  if(!cccd) return '';
+  return 'Số CCCD: ' + cccd + (ngayFmt ? ', ngày cấp: ' + ngayFmt : '');
+}
+
+function parsePerson(p, map){
+  // map: {ten, ns, gtSelect?, diachi, gtField, sdt?, chet?}
+  p = normalizeParts(p);
+  const cccd = p[0]||'';
+  const ten = p[1]||'';
+  const ns = fmtDate(p[2]||'');
+  let diachi = '', ngayCap = '';
+  if(isGender(p[3])){
+    if(map.gtSelect){
+      const g=(p[3]||'').toLowerCase();
+      set(map.gtSelect, (g.includes('nữ')||g==='nu') ? 'Nữ' : 'Nam');
+    }
+    diachi = p[4]||'';
+    ngayCap = p[5]||'';
+  } else {
+    diachi = p[3]||'';
+    ngayCap = p[4]||p[5]||'';
+  }
+  const ngayFmt = ngayCap ? fmtDate(ngayCap) : '';
+  set(map.ten, ten);
+  set(map.ns, ns);
+  set(map.diachi, diachi);
+  set(map.gtField, gtCCCD(cccd, ngayFmt));
+  if(map.chet && ngayFmt){
+    const d = ngayFmt.split('/');
+    if(d.length===3){
+      const dd=parseInt(d[0],10)||'';
+      const mm=parseInt(d[1],10)||'';
+      const yy=parseInt(d[2],10)||'';
+      set('nc',dd); set('tc2',mm); set('yc',yy);
+      set('ngbt',dd); set('tgbt',mm); set('ygbt',yy);
+      try{
+        const [ld,lm,ly,leap]=convertSolar2Lunar(dd,mm,yy,7);
+        set('na',ld); set('ta',lm); set('ya',ly);
+        const nh=document.getElementById('nhuan'); if(nh) nh.checked=!!leap;
+      }catch(e){}
+    }
+  }
+}
+
+function parseNYC(){
+  let p=splitP('pNYC');
+  if(p.length<2){alert('Dán theo: CCCD|Họ tên|Ngày sinh|Giới tính|Địa chỉ|Ngày cấp CCCD');return;}
+  parsePerson(p, {ten:'tn', ns:'nsn', diachi:'ctn', gtField:'gtn'});
+  s();
+}
+
+function parseChet(){
+  let p=splitP('pChet');
+  if(p.length<2){alert('Dán theo: CCCD|Họ tên|Ngày sinh|Giới tính|Địa chỉ|Ngày cấp CCCD');return;}
+  set('cmndcu','');
+  parsePerson(p, {ten:'tc', ns:'nsc', gtSelect:'gt', diachi:'ctc', gtField:'gtc', chet:true});
+  s();
+}
+
+function parseLC1(){
+  let p=splitP('pLC1');
+  if(p.length<2){alert('Dán theo: CCCD|Họ tên|Ngày sinh|Giới tính|Địa chỉ|Ngày cấp CCCD');return;}
+  parsePerson(p, {ten:'l1', ns:'l1ns', diachi:'l1hk', gtField:'l1gt'});
+  s();
+}
+
+function parseLC2(){
+  let p=splitP('pLC2');
+  if(p.length<2){alert('Dán theo: CCCD|Họ tên|Ngày sinh|Giới tính|Địa chỉ|Ngày cấp CCCD');return;}
+  parsePerson(p, {ten:'l2', ns:'l2ns', diachi:'l2hk', gtField:'l2gt'});
+  s();
+}
+
+function mau(){
+  document.getElementById('pNYC').value='049175000123|Nguyễn Văn A|12081975|Nam|Thôn 3, xã Ngô Mây, tỉnh Gia Lai|15062020';
+  document.getElementById('pChet').value='052149006428|Huỳnh Thị Đ|01011943|Nữ|Thôn A, CA, PC, BĐ|28092021';
+  document.getElementById('pLC1').value='049165000456|Trần Văn Bình|20051965|Nam|Thôn 3, xã Ngô Mây|10032021';
+  document.getElementById('pLC2').value='049170000789|Lê Thị Hoa|15111970|Nữ|Thôn 3, xã Ngô Mây|22072019';
+  parseNYC();parseChet();parseLC1();parseLC2();
+  set('qh','Con');
+  set('noc','Tại nhà');set('nn','Bệnh già');set('ncc','Nghĩa trang thôn 3');
+  set('tht','3');set('tcu','An Hòa');set('xcu','xã Cát Trinh, H. Phù Cát, T. Bình Định');
+  set('tthon','3');set('tt','Phạm Văn Thành');set('gbb','8');set('pbb','30');set('gkt','9');set('pkt','15');
+  set('bs','Có');set('slbs','2');
+  s();
+}
+
+function xoa(){
+  ids.forEach(i=>{
+    const e=document.getElementById(i);
+    if(!e)return;
+    if(i==='cq')e.value='UBND xã Ngô Mây, tỉnh Gia Lai';
+    else if(i==='nld')e.value='xã Ngô Mây';
+    else if(i==='dt')e.value='Kinh';
+    else if(i==='qt')e.value='Việt Nam';
+    else if(i==='ngbb')e.value='Đinh Tấn Vinh';
+    else if(i==='bs')e.value='Không';
+    else if(i==='slbs')e.value='0';
+    else if(['nl','tl','yl'].includes(i)){}
+    else e.value='';
+  });
+  ['pNYC','pChet','pLC1','pLC2'].forEach(i=>document.getElementById(i).value='');
+  const n=new Date();
+  set('nl',n.getDate());set('tl',n.getMonth()+1);set('yl',n.getFullYear());
+  s();
+}
+
+function exportWord(){
+  try {
+    // Lấy nội dung đã điền của 3 mẫu
+    const parts = [];
+    ['p1','p2','p3'].forEach(function(id, idx){
+      const src = document.getElementById(id);
+      if(!src) return;
+      const clone = src.cloneNode(true);
+      // Bỏ class ẩn, ép hiện
+      clone.className = 'page';
+      clone.removeAttribute('style');
+      // Xóa attribute data không cần
+      clone.querySelectorAll('[d]').forEach(function(el){
+        el.removeAttribute('d');
+        el.removeAttribute('data-prefix');
+        el.removeAttribute('data-f');
+      });
+      parts.push('<div class="page">' + clone.innerHTML + '</div>');
+      if(idx < 2){
+        parts.push('<br clear="all" style="page-break-before:always; mso-break-type:section-break">');
+      }
+    });
+
+    const css =
+      'body{font-family:"Times New Roman",Times,serif;font-size:13pt;line-height:1.5;color:#000;}' +
+      '.qh{text-align:center;font-weight:700;font-size:13pt;line-height:1.3;}' +
+      '.qh .td{text-transform:uppercase;}' +
+      '.gn{text-align:center;margin:3px 0 10px;font-weight:700;}' +
+      '.tt{text-align:center;font-weight:700;font-size:14pt;text-transform:uppercase;margin:10px 0 8px;}' +
+      '.v{display:inline;border-bottom:1px solid #000;padding:0 2px;font-weight:600;}' +
+      '.v.e{color:#666;font-weight:400;border-bottom:1px dotted #999;}' +
+      '.d{margin:5px 0;}' +
+      '.st{font-weight:700;margin:10px 0 4px;}' +
+      '.cd{font-style:italic;margin:12px 0 6px;}' +
+      '.ck{width:100%;border-collapse:collapse;margin-top:14px;}' +
+      '.ck td{width:50%;vertical-align:top;padding:6px;text-align:center;}' +
+      '.ck .lb{font-weight:700;}' +
+      '.ck .nm{margin-top:42px;font-weight:600;}' +
+      '.sm{font-size:11pt;}' +
+      '.c{text-align:center;}' +
+      '.mt{margin-top:10px;}' +
+      '.page{page-break-after:always;}' +
+      '.page:last-child{page-break-after:auto;}';
+
+    const html =
+      '<html xmlns:o="urn:schemas-microsoft-com:office:office" ' +
+      'xmlns:w="urn:schemas-microsoft-com:office:word" ' +
+      'xmlns="http://www.w3.org/TR/REC-html40">' +
+      '<head><meta charset="utf-8">' +
+      '<!--[if gte mso 9]><xml><w:WordDocument><w:View>Print</w:View><w:Zoom>100</w:Zoom>' +
+      '<w:DoNotOptimizeForBrowser/></w:WordDocument></xml><![endif]-->' +
+      '<style>@page{size:A4;margin:20mm 15mm 20mm 30mm;}' + css + '</style></head>' +
+      '<body>' + parts.join('') + '</body></html>';
+
+    // BOM + HTML → file .doc
+    const blob = new Blob(['\ufeff', html], { type: 'application/msword;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    let ten = (document.getElementById('tc') && document.getElementById('tc').value) || 'khai-tu';
+    ten = ten.trim().replace(/[\\/:*?"<>|]/g, '').replace(/\s+/g, '_').substring(0, 40);
+    if(!ten) ten = 'khai-tu';
+    a.href = url;
+    a.download = 'Ho_so_khai_tu_' + ten + '.doc';
+    a.style.display = 'none';
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(function(){
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }, 500);
+  } catch(err) {
+    alert('Lỗi xuất Word: ' + (err && err.message ? err.message : err));
+    console.error(err);
+  }
+}
+
+(function(){
+  const n=new Date();
+  set('nl',n.getDate());set('tl',n.getMonth()+1);set('yl',n.getFullYear());
+  s();
+})();
+</script>
+</body>
+</html>
